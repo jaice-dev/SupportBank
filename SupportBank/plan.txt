@@ -1,0 +1,46 @@
+Essential
+    Oven CSV and read (assign to string)
+
+    List All - prints out the names of each person, 
+    along with the total amount they owe or are owed, as before
+
+    List [Account] - prints out every transaction (with date, narrative, to and amount) 
+    for the specific account the user asks for.
+
+Database Class  
+    List of Account objects
+    List of transaction objects
+    csvlist
+
+    CreateDatabase
+    DisplayDatabase()
+    CreateAccount("jordan", 10) - append List of accounts
+    UserChangeBalance(user, amount)
+    CreateAccounts(List of transactions)
+    {
+        for each unique user:
+        List of transactions => CreateAccount(name, overallbalance)
+    }
+    DisplayAccounts
+
+Account Class
+    String name
+    Int Balance
+
+    ChangeBalance(amount)
+
+
+
+Transaction Class
+    date
+    narrative
+    to
+    ammount
+
+
+
+Database csvdatabase = new Database();
+Database.CreateDatabase(file)
+Database.DisplayDatabase()
+Database.DisplayAccounts
+
