@@ -6,12 +6,15 @@ namespace SupportBank
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
-            Databases.Initialise();
-            Databases.PrintCsv();
+            var test = Databases.AccountList;
+            
+            Databases.DisplayAccounts();
+            /*Databases.Initialise();
+            // Databases.PrintCsv();
             Account ewa = new Account(accountName: "Ewa", accountBalance: 10m);
-            ewa.DisplayAccountData();
+            Account jordan = new Account("jordan",5m);
+            Databases.PrintCsv();*/
+
 
         }
     }

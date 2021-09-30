@@ -13,8 +13,8 @@ Database Class
     csvlist
 
     Methods:
-        CreateDatabase()
-        DisplayDatabase()
+        Initialise()
+        PrintCsv()
         CreateAccount("jordan", 10) - append List of accounts
         UserChangeBalance(user, amount)
         CreateAccountsFromFile(List of transactions)
@@ -53,3 +53,6 @@ Database.DisplayAccounts
 Questions for Ben!
     Namespaces - same for all files?
     File path relative?
+    
+To Do!
+    Change account initialisation to get/set

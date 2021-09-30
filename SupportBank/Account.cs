@@ -4,19 +4,24 @@ namespace SupportBank
 {
     public class Account
     {
-        public string name;
-        public decimal balance;
+        private readonly string _name;
+        private decimal _balance;
         
         //constuctors for initialising
         public Account(string accountName, decimal accountBalance)
         {
-            name = accountName;
-            balance = accountBalance;
+            _name = accountName;
+            _balance = accountBalance;
         }
         
         public void DisplayAccountData()
         {
-            Console.WriteLine($"Name: {name} Balance: {balance}");
+            Console.WriteLine($"Name: {_name} Balance: {_balance}");
+        }
+
+        public void ChangeBalance(decimal amount)
+        {
+            _balance += amount;
         }
 
     }

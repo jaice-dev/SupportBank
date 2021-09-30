@@ -7,11 +7,10 @@ namespace SupportBank
 {
     internal class Databases
     {
-        private static readonly string _csvPath = @"C:\Training\SupportBank\SupportBank\DodgyTransactions2015.csv";
-        //C:\Training\SupportBank\SupportBank\DodgyTransactions2015.csv
-        // C:\Training\SupportBank\SupportBank\SupportBank\Program.cs
+        private static readonly string _csvPath = @"../../../DodgyTransactions2015.csv";
 
         private static List<string> csvlist = new();
+        public static List<Account> AccountList = new();
 
         public static void Initialise()
         {
@@ -36,6 +35,17 @@ namespace SupportBank
                 Console.WriteLine(i);
             }
 
+        }
+
+        public void AddAccountToList(Account account)
+        {
+            AccountList.Add(account);
+        }
+
+        public static void DisplayAccounts()
+        {
+            this.AddAccountToList();
+            AccountList.ForEach(i => i.DisplayAccountData());
         }
 
     }
