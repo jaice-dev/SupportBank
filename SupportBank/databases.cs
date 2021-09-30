@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Microsoft.VisualBasic.FileIO;
 
 
-namespace SupportBank.db
+namespace SupportBank
 {
     internal class Databases
     {
-        private static readonly string _csvPath = @"C:\Users\ewaros\Documents\Training\SupportBank\DodgyTransactions2015.csv";
+        private static readonly string _csvPath = @"C:\Training\SupportBank\SupportBank\DodgyTransactions2015.csv";
+        //C:\Training\SupportBank\SupportBank\DodgyTransactions2015.csv
+        // C:\Training\SupportBank\SupportBank\SupportBank\Program.cs
 
         private static List<string> csvlist = new();
 

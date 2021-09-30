@@ -1,5 +1,4 @@
 ﻿using System;
-using SupportBank.db;
 
 namespace SupportBank
 {
@@ -11,7 +10,9 @@ namespace SupportBank
 
             Databases.Initialise();
             Databases.PrintCsv();
-            
+            Account ewa = new Account(accountName: "Ewa", accountBalance: 10m);
+            ewa.DisplayAccountData();
+
         }
     }
 }
