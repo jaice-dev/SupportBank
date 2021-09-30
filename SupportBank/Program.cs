@@ -1,4 +1,5 @@
 ﻿using System;
+using SupportBank.db;
 
 namespace SupportBank
 {
@@ -7,6 +8,10 @@ namespace SupportBank
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            Databases.Initialise();
+            Databases.PrintCsv();
+            
         }
     }
 }
