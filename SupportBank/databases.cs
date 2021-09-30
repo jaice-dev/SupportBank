@@ -9,7 +9,7 @@ namespace SupportBank
     {
         private static readonly string _csvPath = @"../../../DodgyTransactions2015.csv";
 
-        private static List<string> csvlist = new();
+        public static List<string[]> csvlist = new();
         public static List<Account> AccountList = new();
 
         public static void Initialise()
@@ -18,10 +18,11 @@ namespace SupportBank
             using (TextFieldParser csvReader = new TextFieldParser(_csvPath))
             {
                 csvReader.SetDelimiters(new string[] {","});
+                csvReader.ReadLine();
 
                 while (!csvReader.EndOfData)
                 {
-                    string fields = csvReader.ReadLine();
+                    string[] fields = csvReader.ReadFields();
                     csvlist.Add(fields);
 
                 }
@@ -30,23 +31,65 @@ namespace SupportBank
 
         public static void PrintCsv()
         {
-            foreach (var i in csvlist)
+            foreach (var array in csvlist)
             {
-                Console.WriteLine(i);
+                foreach (var item in array)
+                {
+                    Console.Write($"{item}, ");
+                }
+                Console.Write("\n");
             }
 
         }
 
-        public void AddAccountToList(Account account)
+        public static void AddAccountToList(Account account)
         {
             AccountList.Add(account);
         }
 
         public static void DisplayAccounts()
         {
-            this.AddAccountToList();
             AccountList.ForEach(i => i.DisplayAccountData());
         }
+        
+        public static bool CheckAccountExists(string name) // returns true if account exists
+        {
+            bool flag = false;
+            foreach (Account account in AccountList)
+            {
+                if (account.GetName() == name)
+                {
+                    flag = true;
+                }
+            }
+
+            return flag;
+        }
+
+        public static void CreateAccountsFromCsv()
+        {
+            foreach (var line in Databases.csvlist)
+            {
+                if(!CheckAccountExists(line[1]))
+                {
+                    Account tempAccount = new(line[1], $"line[4]"m);
+                    Databases.AddAccountToList(tempAccount);
+                }
+            }
+            /*
+            loop through csv:
+                if user_name not in Account:
+                    create user
+                    update balance
+                otherwise:
+                    update balance
+                    */
+            
+            
+
+        }
+        
+        
 
     }
 }

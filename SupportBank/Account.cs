@@ -24,5 +24,11 @@ namespace SupportBank
             _balance += amount;
         }
 
+        public string GetName()
+        {
+            return _name;
+        }
+        
+
     }
 }
