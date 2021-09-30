@@ -12,30 +12,35 @@ Database Class
     List of transaction objects
     csvlist
 
-    CreateDatabase
-    DisplayDatabase()
-    CreateAccount("jordan", 10) - append List of accounts
-    UserChangeBalance(user, amount)
-    CreateAccounts(List of transactions)
-    {
-        for each unique user:
-        List of transactions => CreateAccount(name, overallbalance)
-    }
-    DisplayAccounts
+    Methods:
+        CreateDatabase()
+        DisplayDatabase()
+        CreateAccount("jordan", 10) - append List of accounts
+        UserChangeBalance(user, amount)
+        CreateAccountsFromFile(List of transactions)
+        {
+            for each unique user:
+            List of transactions => CreateAccount(name, overallbalance)
+        }
+      DisplayAccounts()
 
 Account Class
     String name
     Int Balance
+    (Or Dictionary?)
 
-    ChangeBalance(amount)
-
+    Methods:
+        ChangeBalance(amount)
 
 
 Transaction Class
     date
     narrative
-    to
-    ammount
+    Payee
+    Owed
+    amount
+
+
 
 
 
@@ -44,3 +49,6 @@ Database.CreateDatabase(file)
 Database.DisplayDatabase()
 Database.DisplayAccounts
 
+
+Questions for Ben!
+    Namespaces - same for all files?
