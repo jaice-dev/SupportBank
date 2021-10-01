@@ -106,12 +106,22 @@ namespace SupportBank
                 */
             public static void ChangeBalances(string nameLent, string nameOwed, string amount)
             {
+
+                try
+                {
+                    Account foundLent = AccountList.Find(x => x.GetName() == nameLent);
+                    foundLent.ChangeBalance(-(Convert.ToDecimal(amount)));
                 
-                Account foundLent = AccountList.Find(x => x.GetName() == nameLent);
-                foundLent.ChangeBalance(-Convert.ToDecimal(amount));
+                    Account foundOwed = AccountList.Find(x => x.GetName() == nameOwed);
+                    foundOwed.ChangeBalance(Convert.ToDecimal(amount));
+
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(amount + "is not a number");
+                }
                 
-                Account foundOwed = AccountList.Find(x => x.GetName() == nameOwed);
-                foundOwed.ChangeBalance(Convert.ToDecimal(amount));
 
                 
                 
