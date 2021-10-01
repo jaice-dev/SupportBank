@@ -12,6 +12,7 @@ namespace SupportBank
 
         public static List<string[]> csvlist = new();
         public static List<Account> AccountList = new();
+        public static Dictionary<string, List<string[]>> Transactions = new ();
 
         public static void Initialise()
         {
@@ -92,47 +93,89 @@ namespace SupportBank
                 }
                 
                 ChangeBalances(line[1], line[2], (line[4]));
+
             }
         }
+        
+        public static void ChangeBalances(string nameLent, string nameOwed, string amount)
+        {
 
-
-        /*
-        loop through csv:
-            if user_name not in Account:
-                create user
-                update balance
-            otherwise:
-                update balance
-                */
-            public static void ChangeBalances(string nameLent, string nameOwed, string amount)
+            try
             {
-
-                try
-                {
-                    Account foundLent = AccountList.Find(x => x.GetName() == nameLent);
-                    foundLent.ChangeBalance(-(Convert.ToDecimal(amount)));
-                
-                    Account foundOwed = AccountList.Find(x => x.GetName() == nameOwed);
-                    foundOwed.ChangeBalance(Convert.ToDecimal(amount));
+                Account foundLent = AccountList.Find(x => x.GetName() == nameLent);
+                foundLent.ChangeBalance(-(Convert.ToDecimal(amount)));
+            
+                Account foundOwed = AccountList.Find(x => x.GetName() == nameOwed);
+                foundOwed.ChangeBalance(Convert.ToDecimal(amount));
 
 
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(amount + "is not a number");
-                }
-                
-
-                
-                
-                
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(amount + "is not a number");
+            }
         }
-        
-        
+
+        public static void AddTransactionsToDict()
+        {
+            foreach (var line in csvlist)
+            {
+                string date = line[0];
+                string fromUser = line[1];
+                string toUser = line[2];
+                string narrative = line[3];
+                string amount = line[4];
+
+                List<string[]> fromUserList = new List<string[]>();
+                List<string[]> toUserList = new List<string[]>();
+
+                string[] fromUserArray = new[] {date, toUser, narrative, "-" + amount};
+                string[] toUserArray = new[] {date, fromUser, narrative, amount};
+
+
+                fromUserList.Add(fromUserArray);
+                toUserList.Add(toUserArray);
+
+                if (!Transactions.ContainsKey(fromUser))
+                {
+                    Transactions.Add(fromUser, fromUserList);
+                }
+                else
+                {
+                    Transactions[fromUser].Add(fromUserArray);
+                }
+
+                if (!Transactions.ContainsKey(toUser))
+                {
+                    Transactions.Add(toUser, toUserList);
+                }
+                else
+                {
+                    Transactions[toUser].Add(toUserArray);
+                }
+            }
+        }
+
+    public static void DisplayUserTransactions(string username)
+    {
+        foreach (var transaction in Transactions)
+        {
+            if (transaction.Key == username)
+            {
+                foreach (var col in transaction.Value)
+                {
+                    Console.WriteLine($"Date: {col[0]} Person: {col[1]} Narrative: {col[2]} Amount: {col[3]}");
+                }
+            }
+            
+        }
+    }
 
     }
+        
+        
+
+}
 
 
 

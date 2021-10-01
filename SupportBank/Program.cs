@@ -9,15 +9,22 @@ namespace SupportBank
         {
 
             Databases.Initialise();
-            // Databases.PrintCsv();
-            /*Account ewa = new Account(accountName: "Ewa", accountBalance: 10.00m);
-            Account jordan = new Account("jordan",5.00m);
-            Databases.AddAccountToList(ewa);
-            Databases.AddAccountToList(jordan);*/
-
-            Databases.DisplayAccounts();
             Databases.CreateAccountsFromCsv();
-            Databases.DisplayAccounts();
+            Databases.AddTransactionsToDict();
+
+            Console.WriteLine("Please enter a request (List All / List [Account]: ");
+            string UserInput = Console.ReadLine();
+
+            if (UserInput.ToLower() == "list all")
+            {
+                Databases.DisplayAccounts();
+            }
+
+            else if (UserInput.ToLower().Substring(0, 5) == "list ")
+            { 
+                string account = UserInput.Substring(5); 
+                Databases.DisplayUserTransactions(account);
+            }
 
 
 

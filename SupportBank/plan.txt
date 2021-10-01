@@ -56,3 +56,4 @@ Questions for Ben!
     
 To Do!
     Change account initialisation to get/set
+    Refactor CreateTransactions from CSV to not loop again
