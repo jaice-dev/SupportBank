@@ -12,20 +12,33 @@ namespace SupportBank
             Databases.CreateAccountsFromCsv();
             Databases.AddTransactionsToDict();
             //TODO make AddTransaction call automatically
-
-            Console.WriteLine("Please enter a request (List All / List [Account]: ");
-            string UserInput = Console.ReadLine();
-
-            if (UserInput.ToLower() == "list all")
+            
+            bool programRunning = true;
+            while (programRunning)
             {
-                Databases.DisplayAccounts();
-            }
+                Console.WriteLine("Please enter a request (List All / List [Account]: ");
+                string userInput = Console.ReadLine();
 
-            else if (UserInput.ToLower().Substring(0, 5) == "list ")
-            { 
-                string account = UserInput.Substring(5); 
-                Databases.DisplayUserTransactions(account);
+
+                if (userInput.ToLower() == "quit" || userInput.ToLower() == "q")
+                {
+                    programRunning = false;
+                }
+                else if (userInput.ToLower() == "list all")
+                {
+                    Databases.DisplayAccounts();
+                }
+                else if (userInput.Length >= 5 && userInput.ToLower().Substring(0, 5) == "list ")
+                { 
+                    string account = userInput.Substring(5); 
+                    Databases.DisplayUserTransactions(account);
+                }
+                else
+                {
+                    Console.WriteLine("Oops! Try again");
+                }
             }
+            
 
 
 
