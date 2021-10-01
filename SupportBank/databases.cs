@@ -49,7 +49,15 @@ namespace SupportBank
 
         public static void DisplayAccounts()
         {
-            AccountList.ForEach(i => i.DisplayAccountData());
+            if (AccountList.Count == 0)
+            {
+                Console.WriteLine("Account list is empty!");
+            }
+            else
+            {
+                AccountList.ForEach(i => i.DisplayAccountData());
+
+            }
         }
         
         public static bool CheckAccountExists(string name) // returns true if account exists
@@ -72,8 +80,8 @@ namespace SupportBank
             {
                 if(!CheckAccountExists(line[1]))
                 {
-                    Account tempAccount = new(line[1], $"line[4]"m);
-                    Databases.AddAccountToList(tempAccount);
+                    Account tempAccount = new(line[1], Convert.ToDecimal(line[4]));
+                    AddAccountToList(tempAccount);
                 }
             }
             /*

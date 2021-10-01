@@ -15,10 +15,9 @@ namespace SupportBank
             Databases.AddAccountToList(ewa);
             Databases.AddAccountToList(jordan);*/
 
-            foreach (var line in Databases.csvlist)
-            {
-                Console.WriteLine(line[1]);
-            }
+            Databases.DisplayAccounts();
+            Databases.CreateAccountsFromCsv();
+            Databases.DisplayAccounts();
 
 
 

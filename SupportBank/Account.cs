@@ -16,7 +16,7 @@ namespace SupportBank
         
         public void DisplayAccountData()
         {
-            Console.WriteLine($"Name: {_name} Balance: {_balance}");
+            Console.WriteLine($"Name: {_name}, Balance: {_balance}");
         }
 
         public void ChangeBalance(decimal amount)
