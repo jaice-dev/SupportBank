@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using Microsoft.VisualBasic.FileIO;
 
 
@@ -78,29 +79,51 @@ namespace SupportBank
         {
             foreach (var line in Databases.csvlist)
             {
-                if(!CheckAccountExists(line[1]))
+                if (!CheckAccountExists(line[1]))
                 {
-                    Account tempAccount = new(line[1], Convert.ToDecimal(line[4]));
+                    Account tempAccount = new(line[1], 0m);
                     AddAccountToList(tempAccount);
                 }
+
+                if (!CheckAccountExists(line[2]))
+                {
+                    Account tempAccount = new(line[2], 0m);
+                    AddAccountToList(tempAccount);
+                }
+                
+                ChangeBalances(line[1], line[2], (line[4]));
             }
-            /*
-            loop through csv:
-                if user_name not in Account:
-                    create user
-                    update balance
-                otherwise:
-                    update balance
-                    */
-            
-            
+        }
+
+
+        /*
+        loop through csv:
+            if user_name not in Account:
+                create user
+                update balance
+            otherwise:
+                update balance
+                */
+            public static void ChangeBalances(string nameLent, string nameOwed, string amount)
+            {
+                
+                Account foundLent = AccountList.Find(x => x.GetName() == nameLent);
+                foundLent.ChangeBalance(-Convert.ToDecimal(amount));
+                
+                Account foundOwed = AccountList.Find(x => x.GetName() == nameOwed);
+                foundOwed.ChangeBalance(Convert.ToDecimal(amount));
+
+                
+                
+                
+            }
 
         }
         
         
 
     }
-}
+
 
 
  
