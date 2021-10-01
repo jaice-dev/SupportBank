@@ -10,7 +10,8 @@ namespace SupportBank
 
             Databases.Initialise();
             Databases.CreateAccountsFromCsv();
-            Databases.AddTransactionsToDict();
+            Databases.AddTransactionsToAccount();
+            //Databases.AddTransactionsToDict();
             //TODO make AddTransaction call automatically
             
             bool programRunning = true;
@@ -31,6 +32,7 @@ namespace SupportBank
                 else if (userInput.Length >= 5 && userInput.ToLower().Substring(0, 5) == "list ")
                 { 
                     string account = userInput.Substring(5); 
+                    //Databases.DisplayUserTransactionsFromDict(account);
                     Databases.DisplayUserTransactions(account);
                 }
                 else

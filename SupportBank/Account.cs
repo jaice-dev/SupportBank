@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace SupportBank
 {
@@ -6,6 +7,9 @@ namespace SupportBank
     {
         private readonly string _name;
         private decimal _balance;
+        public List<string> userTransactions = new();
+        
+        
         //TODO Refactor to make transaction a List belonging to account object
         
         //constuctors for initialising
