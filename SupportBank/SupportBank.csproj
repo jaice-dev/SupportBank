@@ -9,4 +9,8 @@
       <Folder Include="Test" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="NLog" Version="5.0.0-preview.1" />
+    </ItemGroup>
+
 </Project>
