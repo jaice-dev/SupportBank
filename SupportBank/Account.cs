@@ -6,6 +6,7 @@ namespace SupportBank
     {
         private readonly string _name;
         private decimal _balance;
+        //TODO Refactor to make transaction a List belonging to account object
         
         //constuctors for initialising
         public Account(string accountName, decimal accountBalance)

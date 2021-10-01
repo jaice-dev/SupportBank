@@ -11,6 +11,7 @@ namespace SupportBank
             Databases.Initialise();
             Databases.CreateAccountsFromCsv();
             Databases.AddTransactionsToDict();
+            //TODO make AddTransaction call automatically
 
             Console.WriteLine("Please enter a request (List All / List [Account]: ");
             string UserInput = Console.ReadLine();
