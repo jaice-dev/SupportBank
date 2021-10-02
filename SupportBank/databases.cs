@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualBasic.FileIO;
+using NLog;
+using NLog.Fluent;
 
 
 namespace SupportBank
 {
     internal static class Databases
     {
+        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
         private const string CsvPath = @"../../../DodgyTransactions2015.csv";
 
         // private static readonly string _csvPath = @"../../../Transactions2014.csv";
@@ -76,40 +79,45 @@ namespace SupportBank
         {
             foreach (var line in Databases.CsvList)
             {
-                if (!CheckAccountExists(line[1]))
+                string fromUser = line[1];
+                string toUser = line[2];
+                string amount = line[4];
+
+                
+                if (!CheckAccountExists(fromUser))
                 {
-                    Account tempAccount = new(line[1], 0m);
+                    Account tempAccount = new(accountName:fromUser, 0m);
                     AddAccountToList(tempAccount);
                 }
 
-                if (!CheckAccountExists(line[2]))
+                if (!CheckAccountExists(toUser))
                 {
-                    Account tempAccount = new(line[2], 0m);
+                    Account tempAccount = new(accountName:toUser, 0m);
                     AddAccountToList(tempAccount);
                 }
 
-                ChangeBalances(line[1], line[2], (line[4]));
+                try
+                {
+                    ChangeBalances(fromUser, toUser, amount);
 
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error: Cannot convert '{amount}' to type decimal. See log for more details");
+                    Logger.Debug(e, $"Error: Cannot convert '{amount}' to type decimal in line " +
+                                    $"{Databases.CsvList.IndexOf(line) + 2} of {CsvPath}");
+                    //TODO Discuss with Ben what 'failing gracefully' means here. Should we import the remaining transactions from the file? Should we just stop at the line that failed? Could we validate the rest of the file and tell the user up-front where all of the errors are? What would make sense if you were using the software?
+                }
             }
         }
 
         private static void ChangeBalances(string nameLent, string nameOwed, string amount)
         {
-
-            try
-            {
-                Account foundLent = AccountList.Find(x => x.GetName() == nameLent);
-                foundLent.ChangeBalance(-(Convert.ToDecimal(amount)));
-
-                Account foundOwed = AccountList.Find(x => x.GetName() == nameOwed);
-                foundOwed.ChangeBalance(Convert.ToDecimal(amount));
-
-
-            }
-            catch
-            {
-                Console.WriteLine("Error: '" + amount + "' is not a number");
-            }
+            Account foundLent = AccountList.Find(x => x.GetName() == nameLent);
+            foundLent.ChangeBalance(-(Convert.ToDecimal(amount)));
+            
+            Account foundOwed = AccountList.Find(x => x.GetName() == nameOwed);
+            foundOwed.ChangeBalance(Convert.ToDecimal(amount));
         }
 
         public static void AddTransactionsToDict()
