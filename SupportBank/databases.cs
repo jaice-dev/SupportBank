@@ -1,41 +1,37 @@
 using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
+using System.Linq;
 using Microsoft.VisualBasic.FileIO;
 
 
 namespace SupportBank
 {
-    internal class Databases
+    internal static class Databases
     {
-        private static readonly string _csvPath = @"../../../DodgyTransactions2015.csv";
+        private const string CsvPath = @"../../../DodgyTransactions2015.csv";
+
         // private static readonly string _csvPath = @"../../../Transactions2014.csv";
 
-
-        public static List<string[]> csvlist = new();
-        public static List<Account> AccountList = new();
-        public static Dictionary<string, List<string[]>> Transactions = new();
+        private static readonly List<string[]> CsvList = new();
+        private static readonly List<Account> AccountList = new();
+        private static readonly Dictionary<string, List<string[]>> Transactions = new();
 
         public static void Initialise()
         {
+            using var csvReader = new TextFieldParser(CsvPath);
+            csvReader.SetDelimiters(new string[] {","});
+            csvReader.ReadLine();
 
-            using (TextFieldParser csvReader = new TextFieldParser(_csvPath))
+            while (!csvReader.EndOfData)
             {
-                csvReader.SetDelimiters(new string[] {","});
-                csvReader.ReadLine();
-
-                while (!csvReader.EndOfData)
-                {
-                    string[] fields = csvReader.ReadFields();
-                    csvlist.Add(fields);
-
-                }
+                string[] fields = csvReader.ReadFields();
+                CsvList.Add(fields);
             }
         }
 
         public static void PrintCsv()
         {
-            foreach (var array in csvlist)
+            foreach (var array in CsvList)
             {
                 foreach (var item in array)
                 {
@@ -47,7 +43,7 @@ namespace SupportBank
 
         }
 
-        public static void AddAccountToList(Account account)
+        private static void AddAccountToList(Account account)
         {
             AccountList.Add(account);
         }
@@ -65,15 +61,12 @@ namespace SupportBank
             }
         }
 
-        public static bool CheckAccountExists(string name) // returns true if account exists
+        private static bool CheckAccountExists(string name) // returns true if account exists
         {
-            bool flag = false;
-            foreach (Account account in AccountList)
+            var flag = false;
+            foreach (var account in AccountList.Where(account => account.GetName() == name))
             {
-                if (account.GetName() == name)
-                {
-                    flag = true;
-                }
+                flag = true;
             }
 
             return flag;
@@ -81,7 +74,7 @@ namespace SupportBank
 
         public static void CreateAccountsFromCsv()
         {
-            foreach (var line in Databases.csvlist)
+            foreach (var line in Databases.CsvList)
             {
                 if (!CheckAccountExists(line[1]))
                 {
@@ -100,7 +93,7 @@ namespace SupportBank
             }
         }
 
-        public static void ChangeBalances(string nameLent, string nameOwed, string amount)
+        private static void ChangeBalances(string nameLent, string nameOwed, string amount)
         {
 
             try
@@ -113,15 +106,15 @@ namespace SupportBank
 
 
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(amount + "is not a number");
+                Console.WriteLine("Error: '" + amount + "' is not a number");
             }
         }
 
         public static void AddTransactionsToDict()
         {
-            foreach (var line in csvlist)
+            foreach (var line in CsvList)
             {
                 string date = line[0];
                 string fromUser = line[1];
@@ -179,7 +172,7 @@ namespace SupportBank
         {
             Account account = AccountList.Find(match => match.GetName() == username);
 
-            foreach (var transaction in account.userTransactions)
+            foreach (var transaction in account.UserTransactions)
             {
                 Console.WriteLine(transaction);
             }
@@ -189,7 +182,7 @@ namespace SupportBank
 
         public static void AddTransactionsToAccount()
         {
-            foreach (var line in csvlist)
+            foreach (var line in CsvList)
             {
                 string date = line[0];
                 string fromUser = line[1];
@@ -202,10 +195,10 @@ namespace SupportBank
                 string toUserString = $"Date: {date}, Person: {fromUser}, Narrative: {narrative}, Amount: {amount}";
 
                 Account foundAccountFromUser = AccountList.Find(match => match.GetName() == fromUser);
-                foundAccountFromUser.userTransactions.Add(fromUserString);
+                foundAccountFromUser.UserTransactions.Add(fromUserString);
 
                 Account foundAccountToUser = AccountList.Find(match => match.GetName() == toUser);
-                foundAccountToUser.userTransactions.Add(toUserString);
+                foundAccountToUser.UserTransactions.Add(toUserString);
 
             }
         }

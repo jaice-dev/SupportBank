@@ -7,12 +7,12 @@ namespace SupportBank
     {
         private readonly string _name;
         private decimal _balance;
-        public List<string> userTransactions = new();
+        public readonly List<string> UserTransactions = new();
         
         
         //TODO Refactor to make transaction a List belonging to account object
         
-        //constuctors for initialising
+        //constructors for initialising
         public Account(string accountName, decimal accountBalance)
         {
             _name = accountName;
@@ -33,10 +33,6 @@ namespace SupportBank
         {
             return _name;
         }
-        
-        
-    
-
     }
 }
       
