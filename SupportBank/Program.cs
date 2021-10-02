@@ -17,10 +17,13 @@ namespace SupportBank
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
             LogManager.Configuration = config;
             
-            Logger.Debug("Database Started");
-            
+            Logger.Debug("Initialising Database...");
             Databases.Initialise();
+            
+            Logger.Debug("Creating accounts from file...");
             Databases.CreateAccountsFromCsv();
+            
+            Logger.Debug("Adding transactions to accounts...");
             Databases.AddTransactionsToAccount();
             //Databases.AddTransactionsToDict();
             //TODO make AddTransaction call automatically
