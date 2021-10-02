@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualBasic.FileIO;
 using NLog;
-using NLog.Fluent;
-
 
 namespace SupportBank
 {
@@ -15,11 +13,11 @@ namespace SupportBank
 
         // private static readonly string _csvPath = @"../../../Transactions2014.csv";
 
-        private static readonly List<string[]> CsvList = new();
+        public static readonly List<string[]> CsvList = new();
         private static readonly List<Account> AccountList = new();
         private static readonly Dictionary<string, List<string[]>> Transactions = new();
 
-        public static void Initialise()
+        public static void InitialiseDatabase()
         {
             using var csvReader = new TextFieldParser(CsvPath);
             csvReader.SetDelimiters(new string[] {","});
