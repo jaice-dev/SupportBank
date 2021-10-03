@@ -1,6 +1,9 @@
 using System;
-using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.IO;
+using System.Transactions;
 using Microsoft.VisualBasic.FileIO;
+using Newtonsoft.Json;
 using NLog;
 
 namespace SupportBank
@@ -17,7 +20,7 @@ namespace SupportBank
 
         public static void ImportFile()
         {
-            while (!((_fileYear == "2013") || (_fileYear == "2014") || (_fileYear == "2015")))
+            while (_fileYear is not ("2013" or "2014" or "2015"))
             {
                 Console.WriteLine("Which year's data would you like to view? (2013/2014/2015) :");
                 _fileYear = Console.ReadLine();
@@ -26,18 +29,22 @@ namespace SupportBank
             Logger.Debug("Initialising Database...");
 
 
-            if (_fileYear == "2013")
+            switch (_fileYear)
             {
-                
+                case "2013":
+                    InitialiseJson(_2013Path);
+                    break;
+                case "2014":
+                    InitialiseCsv(_2014Path);
+                    break;
+                case "2015":
+                    InitialiseCsv(_2015Path);
+                    break;
             }
-            else if (_fileYear == "2014")
-                InitialiseCsv(_2014Path);
-            else if (_fileYear == "2015")
-                InitialiseCsv(_2015Path);
 
         }
 
-        public static void InitialiseCsv(string filepath)
+        private static void InitialiseCsv(string filepath)
         {
             
             using var csvReader = new TextFieldParser(filepath);
@@ -49,6 +56,17 @@ namespace SupportBank
                 string[] fields = csvReader.ReadFields();
                 Databases.CsvList.Add(fields);
             }
+        }
+
+        private static void InitialiseJson(string filepath)
+        {
+            string jsonString = File.ReadAllText(filepath);
+            var converted = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
+            foreach (var transaction in converted)
+            {
+                transaction.DisplayTransaction();
+            }
+
         }
     }
 }
