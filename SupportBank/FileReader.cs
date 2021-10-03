@@ -54,7 +54,8 @@ namespace SupportBank
             while (!csvReader.EndOfData)
             {
                 string[] fields = csvReader.ReadFields();
-                Databases.CsvList.Add(fields);
+                Transaction tempTransaction = new Transaction(fields[0], fields[1], fields[2], fields[3], fields[4]);
+                Database.TransactionList.Add(tempTransaction);
             }
         }
 

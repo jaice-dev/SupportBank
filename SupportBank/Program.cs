@@ -22,17 +22,17 @@ namespace SupportBank
             FileReader.ImportFile();
 
             Logger.Debug("Creating accounts from file...");
-            Databases.CreateAccountsFromCsv();
+            Database.CreateAccountsFromTransactionList();
             
             Logger.Debug("Adding transactions to accounts...");
-            Databases.AddTransactionsToAccount();
-            //Databases.AddTransactionsToDict();
+            Database.AddTransactionsToAccounts();
             
             //TODO make AddTransaction call automatically
             //TODO get/setters
             //TODO add logging for if files dont exist
+            //TODO address error if user lists account that doesn't exist
+            //TODO make amounts all to 2 decimal places
             
-
             bool programRunning = true;
             while (programRunning)
             {
@@ -46,13 +46,13 @@ namespace SupportBank
                 }
                 else if (userInput.ToLower() == "list all")
                 {
-                    Databases.DisplayAccounts();
+                    Database.DisplayAccounts();
                 }
                 else if (userInput.Length >= 5 && userInput.ToLower().Substring(0, 5) == "list ")
                 { 
                     string account = userInput.Substring(5); 
                     //Databases.DisplayUserTransactionsFromDict(account);
-                    Databases.DisplayUserTransactions(account);
+                    Database.DisplayUserTransactions(account);
                 }
                 else
                 {
