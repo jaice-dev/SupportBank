@@ -23,9 +23,9 @@ namespace SupportBank
 
         public static void ImportFile()
         {
-            while (_fileYear is not ("2013" or "2014" or "2015"))
+            while (_fileYear is not ("2012" or "2013" or "2014" or "2015"))
             {
-                Console.WriteLine("Which year's data would you like to view? (2013/2014/2015) :");
+                Console.WriteLine("Which year's data would you like to view? (2012/2013/2014/2015) :");
                 _fileYear = Console.ReadLine();
             }
             
@@ -80,7 +80,9 @@ namespace SupportBank
         {
             using (var filestream = File.Open(filepath, FileMode.Open))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(SupportTransaction));
+                XmlSerializer serializer = new XmlSerializer(typeof(TransactionList));
+                var TransactionList = (TransactionList)serializer.Deserialize(filestream);
+                Console.WriteLine(TransactionList);
             }
         }
     }
