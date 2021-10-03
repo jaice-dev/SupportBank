@@ -1,21 +1,23 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SupportBank
 {
-    [XmlRoot("TransactionList")]
-
-    public class TransactionList
-    {
-        public SupportTransaction SupportTransaction { get; set; }
-    }
-
     public class SupportTransaction
     {
         [XmlAttribute("Date")]
         public string Date { get; set; }
         public string Description { get; set; }
         public string Value { get; set; }
-        public Parties Parties { get; set; }
+        [XmlElement("Parties")]
+        public Parties PartiesArray { get; set; }
+    }
+
+    [XmlRootAttribute("TransactionList")]
+    public class SupportTransactionCollection
+    {
+        [XmlElement("SupportTransaction")]
+        public SupportTransaction[] TransactionList { get; set; } 
     }
 
     public class Parties

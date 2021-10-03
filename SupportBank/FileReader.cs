@@ -80,9 +80,18 @@ namespace SupportBank
         {
             using (var filestream = File.Open(filepath, FileMode.Open))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(TransactionList));
-                var TransactionList = (TransactionList)serializer.Deserialize(filestream);
-                Console.WriteLine(TransactionList);
+                XmlSerializer serializer = new XmlSerializer(typeof(SupportTransactionCollection));
+                var TransactionList = (SupportTransactionCollection)serializer.Deserialize(filestream);
+                foreach (var transaction in TransactionList.TransactionList)
+                {
+                    string description = transaction.Description;
+                    string date = transaction.Date;
+                    string value = transaction.Value;
+                    string from = transaction.PartiesArray.From;
+                    string to = transaction.PartiesArray.To;
+                    Transaction tempTransaction = new Transaction(date, from, to, description, value);
+                    Database.TransactionList.Add(tempTransaction);
+                }
             }
         }
     }
