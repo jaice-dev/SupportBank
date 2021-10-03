@@ -107,7 +107,7 @@ namespace SupportBank
         public static void DisplayUserTransactions(string username)
         {
             Account account = AccountList.Find(match => match.GetName() == username);
-
+            Console.WriteLine("Note: Positive amount means inputted account is owed money.");
             foreach (var transaction in account.UserTransactions)
             {
                 if (transaction.FromAccount == username)

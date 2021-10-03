@@ -89,6 +89,9 @@ namespace SupportBank
                     string value = transaction.Value;
                     string from = transaction.PartiesArray.From;
                     string to = transaction.PartiesArray.To;
+                    
+                    //TODO convert date to usable format
+                    
                     Transaction tempTransaction = new Transaction(date, from, to, description, value);
                     Database.TransactionList.Add(tempTransaction);
                 }
