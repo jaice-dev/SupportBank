@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Transactions;
+using System.Xml.Serialization;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using NLog;
+using NLog.Layouts;
 
 namespace SupportBank
 {
@@ -76,7 +78,10 @@ namespace SupportBank
 
         private static void InitialiseXml(string filepath)
         {
-            
+            using (var filestream = File.Open(filepath, FileMode.Open))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(SupportTransaction));
+            }
         }
     }
 }
