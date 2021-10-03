@@ -12,6 +12,7 @@ namespace SupportBank
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
+        private static readonly string _2012Path = @"../../../Transactions2012.xml";
         private static readonly string _2013Path= @"../../../Transactions2013.json";
         private static readonly string _2014Path = @"../../../Transactions2014.csv";
         private static readonly string _2015Path = @"../../../DodgyTransactions2015.csv";
@@ -31,6 +32,9 @@ namespace SupportBank
 
             switch (_fileYear)
             {
+                case "2012":
+                    InitialiseXml(_2012Path);
+                    break;
                 case "2013":
                     InitialiseJson(_2013Path);
                     break;
@@ -68,6 +72,11 @@ namespace SupportBank
                 Database.TransactionList.Add(transaction);
             }
 
+        }
+
+        private static void InitialiseXml(string filepath)
+        {
+            
         }
     }
 }
