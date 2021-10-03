@@ -65,7 +65,7 @@ namespace SupportBank
             var converted = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
             foreach (var transaction in converted)
             {
-                transaction.DisplayTransaction();
+                Database.TransactionList.Add(transaction);
             }
 
         }
