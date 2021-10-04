@@ -20,10 +20,18 @@ namespace SupportBank
             Narrative = narrative;
             Amount = amount;
         }
-
+        
         public void DisplayTransaction()
         {
-            Console.WriteLine($"Date: {Date}, From: {FromAccount}, To: {ToAccount}, Narrative: {Narrative}, Amount: {Amount}");
+            try
+            {
+                decimal decimalAmount = Math.Round(Convert.ToDecimal(Amount), 2); //shows two decimal places
+                Console.WriteLine($"Date: {Date}, From: {FromAccount}, To: {ToAccount}, Narrative: {Narrative}, Amount: {Amount}");
+            }
+            catch
+            {
+                Console.WriteLine($"Date: {Date}, From: {FromAccount}, To: {ToAccount}, Narrative: {Narrative}, Amount: {Amount}");
+            }
         }
     }
 }

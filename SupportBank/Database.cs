@@ -72,7 +72,7 @@ namespace SupportBank
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Error: Cannot convert '{amount}' to type decimal. See log for more details");
+                    Console.WriteLine($"Non fatal Error: Cannot convert '{amount}' to type decimal. See log for more details");
                     Logger.Debug(e, $"Error: Cannot convert '{amount}' to type decimal in line " +
                                     $"{Database.TransactionList.IndexOf(transaction) + 2} of {CsvPath}");
                     //TODO Discuss with Ben what 'failing gracefully' means here. Should we import the remaining transactions from the file? Should we just stop at the line that failed? Could we validate the rest of the file and tell the user up-front where all of the errors are? What would make sense if you were using the software?
@@ -110,6 +110,15 @@ namespace SupportBank
             Console.WriteLine("Note: Positive amount means inputted account is owed money.");
             foreach (var transaction in account.UserTransactions)
             {
+                // try
+                // {
+                //     decimal amount = Math.Round(Convert.ToDecimal(transaction.Amount), 2); //Round to 2dp
+                // }
+                // catch
+                // {
+                //     string amount = transaction.Amount;
+                // }
+                //
                 if (transaction.FromAccount == username)
                 {
                     Console.WriteLine($"Date: {transaction.Date}, Person: {transaction.ToAccount}, Narrative: {transaction.Narrative}, Amount: -{transaction.Amount}");

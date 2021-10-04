@@ -23,7 +23,7 @@ namespace SupportBank
         
         public void DisplayAccountData()
         {
-            Console.WriteLine($"Name: {_name}, Balance: {_balance}");
+            Console.WriteLine($"Name: {_name}, Balance: {Math.Round(_balance, 2)}");
         }
 
         public void ChangeBalance(decimal amount)
