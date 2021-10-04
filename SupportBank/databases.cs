@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net.NetworkInformation;
 using Microsoft.VisualBasic.FileIO;
+using NLog;
 
 
 namespace SupportBank
 {
     internal class Databases
     {
+        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
         private static readonly string _csvPath = @"../../../DodgyTransactions2015.csv";
 
-        public static List<string[]> csvlist = new();
-        public static List<Account> AccountList = new();
+        public static readonly List<Transaction> csvTransactionslist = new();
         public static Dictionary<string, List<string[]>> Transactions = new();
 
         public static void Initialise()
@@ -25,7 +27,9 @@ namespace SupportBank
                 while (!csvReader.EndOfData)
                 {
                     string[] fields = csvReader.ReadFields();
-                    csvlist.Add(fields);
+                    
+                    Transaction tempTransaction = new Transaction(fields[0], fields[1], fields[2], fields[3], fields[4]);
+                    csvTransactionslist.Add(tempTransaction);
 
                 }
             }
@@ -33,7 +37,7 @@ namespace SupportBank
 
         public static void PrintCsv()
         {
-            foreach (var array in csvlist)
+            foreach (var array in csvTransactionslist)
             {
                 foreach (var item in array)
                 {
@@ -79,7 +83,7 @@ namespace SupportBank
 
         public static void CreateAccountsFromCsv()
         {
-            foreach (var line in Databases.csvlist)
+            foreach (var line in Databases.csvTransactionslist)
             {
                 if (!CheckAccountExists(line[1]))
                 {
@@ -113,13 +117,14 @@ namespace SupportBank
             }
             catch (Exception e)
             {
+                Logger.Debug(e, amount + "is not a number");
                 Console.WriteLine(amount + "is not a number");
             }
         }
 
         public static void AddTransactionsToDict()
         {
-            foreach (var line in csvlist)
+            foreach (var line in csvTransactionslist)
             {
                 string date = line[0];
                 string fromUser = line[1];
@@ -177,33 +182,25 @@ namespace SupportBank
         {
             Account account = AccountList.Find(match => match.GetName() == username);
 
-            foreach (var transaction in account.userTransactions)
+            foreach (var transaction in account.newUserTransactions)
             {
-                Console.WriteLine(transaction);
+                //Console.WriteLine(transaction);
+                Console.WriteLine($"Date{Transaction.Date} FromAccount{Transaction.FromAccount} ToAccounts{Transaction.ToAccount} Narrative{Transaction.Narrative} Amount{Transaction.Amount} ");
             }
-
-
         }
 
         public static void AddTransactionsToAccount()
         {
-            foreach (var line in csvlist)
+            foreach (var line in csvTransactionslist)
             {
-                string date = line[0];
-                string fromUser = line[1];
-                string toUser = line[2];
-                string narrative = line[3];
-                string amount = line[4];
-
-
-                string fromUserString = $"Date: {date}, Person: {toUser}, Narrative: {narrative}, Amount: -{amount}";
-                string toUserString = $"Date: {date}, Person: {fromUser}, Narrative: {narrative}, Amount: {amount}";
-
+                string fromUser = line.FromAccount;
+                string toUser = line.ToAccount;
+                
                 Account foundAccountFromUser = AccountList.Find(match => match.GetName() == fromUser);
-                foundAccountFromUser.userTransactions.Add(fromUserString);
+                foundAccountFromUser.newUserTransactions.Add(line);
 
                 Account foundAccountToUser = AccountList.Find(match => match.GetName() == toUser);
-                foundAccountToUser.userTransactions.Add(toUserString);
+                foundAccountToUser.newUserTransactions.Add(line);
 
             }
         }

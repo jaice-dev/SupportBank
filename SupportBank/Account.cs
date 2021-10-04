@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using NLog;
 
 namespace SupportBank
 {
     public class Account
     {
+        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _name;
         private decimal _balance;
         public List<string> userTransactions = new();
+        public List<Transaction> newUserTransactions = new();
         
         
         //TODO Refactor to make transaction a List belonging to account object
